@@ -12,7 +12,6 @@ const INITIAL = {
   no_hp: "",
   email: "",
   membership_code: "",
-  reseller: "",
 };
 
 export default function Home() {
@@ -40,10 +39,12 @@ export default function Home() {
       const json = await res.json();
 
       if (json.ok) {
-        setStatus({ type: "ok", text: "✅ Berhasil terkirim! Cek Telegram lo." });
-        setForm(INITIAL);
+        window.location.href = "/success";
       } else {
-        setStatus({ type: "err", text: "❌ " + (json.error || "Gagal mengirim") });
+        setStatus({
+          type: "err",
+          text: "❌ " + (json.error || "Gagal mengirim"),
+        });
       }
     } catch {
       setStatus({ type: "err", text: "❌ Error koneksi, coba lagi." });
@@ -60,19 +61,35 @@ export default function Home() {
 
         <form onSubmit={handleSubmit}>
           <div className="row">
-            <Field label="Seat" req name="seat" value={form.seat} onChange={set} placeholder="A1" />
-            <Field label="Backup Seat" name="backup_seat" value={form.backup_seat} onChange={set} placeholder="B3" />
+            <Field
+              label="Seat"
+              req
+              name="seat"
+              value={form.seat}
+              onChange={set}
+              placeholder="A1"
+            />
+            <Field
+              label="Backup Seat"
+              name="backup_seat"
+              value={form.backup_seat}
+              onChange={set}
+              placeholder="B3"
+            />
           </div>
 
           <div className="row">
             <div className="field">
               <label>Jumlah Tiket</label>
-              <select name="jumlah_tiket" value={form.jumlah_tiket} onChange={set}>
+              <select
+                name="jumlah_tiket"
+                value={form.jumlah_tiket}
+                onChange={set}
+              >
                 <option value="1">1 Tiket</option>
                 <option value="2">2 Tiket</option>
                 <option value="3">3 Tiket</option>
                 <option value="4">4 Tiket</option>
-                <option value="5">5 Tiket</option>
               </select>
             </div>
             <div className="field">
@@ -85,16 +102,51 @@ export default function Home() {
             </div>
           </div>
 
-          <Field label="Nama Lengkap" req name="nama_lengkap" value={form.nama_lengkap} onChange={set} placeholder="Nama sesuai KTP" />
-          <Field label="No. KTP" name="no_ktp" value={form.no_ktp} onChange={set} placeholder="16 digit NIK" maxLength={16} />
+          <Field
+            label="Nama Lengkap"
+            req
+            name="nama_lengkap"
+            value={form.nama_lengkap}
+            onChange={set}
+            placeholder="Nama sesuai KTP"
+          />
+          <Field
+            label="No. KTP"
+            name="no_ktp"
+            value={form.no_ktp}
+            onChange={set}
+            placeholder="16 digit NIK"
+            maxLength={16}
+          />
 
           <div className="row">
-            <Field label="No. HP" req name="no_hp" value={form.no_hp} onChange={set} placeholder="08xxx" type="tel" />
-            <Field label="Email" req name="email" value={form.email} onChange={set} placeholder="email@domain.com" type="email" />
+            <Field
+              label="No. HP"
+              req
+              name="no_hp"
+              value={form.no_hp}
+              onChange={set}
+              placeholder="08xxx"
+              type="tel"
+            />
+            <Field
+              label="Email"
+              req
+              name="email"
+              value={form.email}
+              onChange={set}
+              placeholder="email@domain.com"
+              type="email"
+            />
           </div>
 
-          <Field label="Membership Code" name="membership_code" value={form.membership_code} onChange={set} placeholder="Kode membership (opsional)" />
-          <Field label="Reseller WA / Nama" name="reseller" value={form.reseller} onChange={set} placeholder="Nama atau nomor WA reseller" />
+          <Field
+            label="Membership Code"
+            name="membership_code"
+            value={form.membership_code}
+            onChange={set}
+            placeholder="Kode membership (opsional)"
+          />
 
           <button className="btn" type="submit" disabled={loading}>
             {loading ? "Mengirim..." : "Daftar Sekarang"}

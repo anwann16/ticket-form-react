@@ -1,6 +1,6 @@
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
-const BACKUP_URL = process.env.BACKUP_URL || "http://54.252.190.91:5000/api/backup";
+const BACKUP_URL = process.env.BACKUP_URL;
 
 export async function POST(request) {
   try {
@@ -12,12 +12,14 @@ export async function POST(request) {
     if (missing.length) {
       return Response.json(
         { ok: false, error: `Field wajib kosong: ${missing.join(", ")}` },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Format message
-    const now = new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" });
+    const now = new Date().toLocaleString("id-ID", {
+      timeZone: "Asia/Jakarta",
+    });
     const msg = [
       "🎟️ <b>PENDAFTARAN TIKET BARU</b>",
       "━━━━━━━━━━━━━━━━━━━━",
@@ -30,7 +32,6 @@ export async function POST(request) {
       `📱 <b>No. HP:</b> ${data.no_hp || "-"}`,
       `📧 <b>Email:</b> ${data.email || "-"}`,
       `🔑 <b>Membership Code:</b> ${data.membership_code || "-"}`,
-      `📲 <b>Reseller WA / Nama:</b> ${data.reseller || "-"}`,
       "━━━━━━━━━━━━━━━━━━━━",
       `🕐 ${now}`,
     ].join("\n");
@@ -48,7 +49,7 @@ export async function POST(request) {
             text: msg,
             parse_mode: "HTML",
           }),
-        }
+        },
       );
       telegramOk = tgRes.ok;
     } catch {
@@ -61,7 +62,11 @@ export async function POST(request) {
       const bkRes = await fetch(BACKUP_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, _telegram_sent: telegramOk, _timestamp: now }),
+        body: JSON.stringify({
+          ...data,
+          _telegram_sent: telegramOk,
+          _timestamp: now,
+        }),
       });
       backupOk = bkRes.ok;
     } catch {
@@ -71,7 +76,7 @@ export async function POST(request) {
     if (!telegramOk && !backupOk) {
       return Response.json(
         { ok: false, error: "Gagal kirim ke Telegram & backup" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -86,7 +91,7 @@ export async function POST(request) {
   } catch (err) {
     return Response.json(
       { ok: false, error: "Server error: " + err.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
