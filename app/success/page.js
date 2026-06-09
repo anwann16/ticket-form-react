@@ -7,9 +7,12 @@ export default function Success() {
         <p className="sub" style={{ marginBottom: 32 }}>
           Pendaftaran tiket kamu sudah terkirim dan tersimpan.
           <br />
-          Cek Telegram untuk konfirmasi.
         </p>
-        <a href="/" className="btn" style={{ textDecoration: "none", display: "inline-block" }}>
+        <a
+          href="/"
+          className="btn"
+          style={{ textDecoration: "none", display: "inline-block" }}
+        >
           ➕ Tambah Data Lagi
         </a>
       </div>
